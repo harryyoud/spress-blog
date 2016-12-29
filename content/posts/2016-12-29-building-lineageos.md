@@ -8,6 +8,9 @@ tags: ["android","cyanogenmod","lineageos","tutorial"]
 
 ## Installing some tools
 blah blah, stuff goes here
+```bash
+sudo apt install ...
+```
 ## Making decisions
 ## Getting the code
 ## Getting the devices
