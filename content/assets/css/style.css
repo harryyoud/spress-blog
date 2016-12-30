@@ -87,3 +87,6 @@ code {
 .posts-list-item a, .posts-list-item a:hover {
     padding:0px;
 }
+pre code.hljs {
+    background: #f5f5f5;
+}
