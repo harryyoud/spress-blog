@@ -206,6 +206,7 @@ For instance: (I chose to not fork, as I'm not making changes for my own purpose
 ```
 After you've made any changes to your manifest or want to update the code from LineageOS, run:
 ```bash
+# From your ~/android/system directory
 repo sync
 ```
 
