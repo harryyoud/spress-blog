@@ -8,6 +8,7 @@ tags: ["android","cyanogenmod","lineageos","tutorial"]
 
 ## Requirements
 You're going to need:
+
 - a Debian-based OS, such as Ubuntu (16.10+ is preferable)
 - a reasonable knowledge of the command line
 - 8GB+ RAM
