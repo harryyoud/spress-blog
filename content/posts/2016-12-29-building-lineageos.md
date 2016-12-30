@@ -7,6 +7,7 @@ tags: ["android","cyanogenmod","lineageos","tutorial"]
 ---
 # This is a work-in-progress - don't take it all to heart
 
+<p id="whatyouneed">&nbsp;</p>
 ## Requirements
 You're going to need:
 
@@ -18,6 +19,7 @@ You're going to need:
 - 10mbps+ internet (if you want to get *anything* done)
 - sudo privileges
 
+<p id="whatstheword">&nbsp;</p>
 ## Some information/Glossary
 - Python is an easy-to-understand high level programming language often used for automation
 - Git is a version control system. It basically tracks any changes to files and folders
@@ -26,6 +28,7 @@ You're going to need:
 - Repositories (often shortened to repos) are basically collections of files (with Git information) such as _android_device_huawei_angler_, the repo that contains _device_ information for the _angler_ device (Nexus 6P) made by _Huawei_
 - breakfast, brunch and lunch are scripts made by Google which make building Android much easier. It means you just pick the device you want to build for, and it does it, rather than having to build each file individually
 
+<p id="tools">&nbsp;</p>
 ## Installing some tools
 For both 32 and 64-bit systems you're going to need to install these packages:
 ```bash
@@ -57,8 +60,9 @@ echo 'fi' >> ~/.profile
 
 ```
 
-
+<p id="decisions">&nbsp;</p>
 ## Making decisions
+<p id="decisions-wheregoesthecode">&nbsp;</p>
 ### Where are you going to put this code?
 Ideally on 1TB SSD, but, unless you're rich or prepared to spend lots of money... no.
 An SSD would be ideal, but finding a large size one isn't a cost-effective option.
@@ -66,9 +70,11 @@ An SSD would be ideal, but finding a large size one isn't a cost-effective optio
 On a different disk to your OS's disk is your best choice. That way your computer shouldn't crap out too badly when it's building.
 I'm going to assume for simplicity, you've chosen to build it on the same disk.
 
+<p id="decisions-devices">&nbsp;</p>
 ### What devices am I building for?
 I can't make this decision for you, but you can. Be aware, each device will take more disk space, and will also mean you will take more time when you build for _all_ devices sequentially
 
+<p id="gettingthecode">&nbsp;</p>
 ## Getting the code
 Here, you want to close and reopen your terminal, to ensure the change we just made is taken into account
 ```bash
@@ -91,11 +97,13 @@ repo sync
 ```
 At this point, (unless you have gigabit internet), go get a coffee. This is gonna take a while. When it's done, you'll be returned to the shell prompt again
 
+<p id="devicecode">&nbsp;</p>
 ## Getting the devices
 The code we just downloaded is the _general_ or _common_ code for Android. Put simply, it's the stuff that's the same on all the devices.  
 To get specific files for a device (such as angler), we need to tell repo which device you want.  
 We can either do this simply, but not future-proofed, or the slightly more complicated way, which is much more fun.
 
+<p id="devicecode-simpleway">&nbsp;</p>
 ### Simple way
 Just replace yourdevicecodenamehere with your device's codename. For instance, the Nexus 6P's is _angler_, the Nexus 9's is _flounder_ and Motorola Moto G (2013)'s is _falcon_
 
@@ -104,12 +112,15 @@ source build/envsetup.sh
 breakfast yourdevicecodenamehere
 ```
 
+<p id="devicecode-complicatedway">&nbsp;</p>
 ### Complicated way (the proper way)
 
+<p id="devicecode-complicatedway-whatsamanifest">&nbsp;</p>
 #### What's a manifest?
 Repo decides what repositories to download by looking through manifests. The main manifest (downloaded when we initialised repo) is present in `~/home/yourusername/android/system/.repo/manifest.xml` and contains loads of repos needed for building common Android files.  
 You _could_ edit this file, but since this is updated when new things are added to Android, your changes would always be being overwritten. So the better option is to use _local manifests_. If you add your own `.xml` files in `~/home/yourusername/android/system/.repo/local_manifests/`, you can add and remove your own repos to the main list, without editing the main manifest.
 
+<p id="devicecode-complicated-organisation">&nbsp;</p>
 #### Organisation
 For instance, my `local_manifests` folder looks a little like this:
 
@@ -124,9 +135,11 @@ File              | What does it contain?
 `serranoltexx.xml`| Device specifics for serranoltexx (Samsung Galaxy S4 Mini - Intl.)
 `shared.xml`      | Some common Android files needed by falcon, serranoltexx, which aren't in the default Android source
 
+<p id="devicecode-complicatedway-whyohwhy">&nbsp;</p>
 #### Why on earth might you do this?
 If you want to make changes to device specific files, or even common Android things, you can `fork` the repository you'd like to change. You can make your changes in this repo (which you own) and then incorporate those changes into your builds.
 
+<p id="devicecode-complicatedway-forkoff">&nbsp;</p>
 #### Forking the repo and making changes (only if you want to make changes)
 
 You first need to create a [GitHub](https://github.com/) account. Then go to [LineageOS's Github](https://github,com/LineageOS), find the repository you want to fork, and click fork in the top right. This will create a copy in your account, where you can make changes online.  
@@ -169,6 +182,13 @@ For instance: (I chose to not fork, as I'm not making changes for my own purpose
                         revision="cm-14.1"/>
 </manifest>
 ```
+After you've made any changes to your manifest or want to update the code from LineageOS, run:
+```bash
+repo sync
+```
 
+<p id="finallyready">&nbsp;</p>
 ## First build
+
+<p id="doitallforme">&nbsp;</p>
 ## Automation
