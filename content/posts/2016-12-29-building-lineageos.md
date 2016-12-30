@@ -5,7 +5,10 @@ description: "A complete tutorial on building LineageOS and derivatives"
 categories: ["android"]
 tags: ["android","cyanogenmod","lineageos","tutorial"]
 ---
-# This is a work-in-progress - don't take it all to heart
+
+<p id="wtfisit">&nbsp;</p>
+## Wtf is LineageOS?
+Android, being open-source, means people can take the code, make their modifications and publish it. CyanogenMod was a group of people who did this, bringing many features into Android we now take for granted. After some trouble with commercialisation, the project rebranded as LineageOS in December 2016. At the time of writing (Late December 2016), the project is basically just the code from cm-14.1. Bigger changes will come when a new Android version is released to the Android Open Source Project.
 
 <p id="whatyouneed">&nbsp;</p>
 ## Requirements
