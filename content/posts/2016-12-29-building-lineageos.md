@@ -242,6 +242,7 @@ and add:
 # 2>&1 means send both normal output and errors to the log file
 ```
 It basically goes like this:
+
 1. Define lots of settings, so I don't have to dig through the script for them:
   - Where's the source? (`$SOURCETREE`)
   - What devices are we building for? (`$DEVICES`)
@@ -268,7 +269,8 @@ It basically goes like this:
 
 <p id="whatnow">&nbsp;</p>
 ## All done
-So builds happen every night for all the devices you chose. What now?  
+So builds happen every night for all the devices you chose. What now?
+
 - Port LineageOS to another device? - _I might write a tutorial for this one day_
 - Make some changes
   - Disable encryption?
