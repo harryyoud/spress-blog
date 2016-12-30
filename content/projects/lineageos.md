@@ -3,5 +3,5 @@ layout: "page"
 title: "LineageOS"
 description: "Unofficial builds of the continuation of the CyanogenMod project, LineageOS"
 ---
-<iframe src="/lineageos/" style="width:100%;height:900px;"></iframe>
-<style>.spresso-wrap {max-width:10000000px;} </style>
+
+LineageOS is the continuation of the late CyanogenMod project. Since the project isn't currently building any nightlies, I've built my own for a number of different devices. [Download and view some more information here](/lineageos/downloads.php)
