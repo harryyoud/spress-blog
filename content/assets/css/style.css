@@ -62,10 +62,18 @@ code {
     padding: 20px 12px;
 }
 /* /Posts list */
-.post-chip{
+.post-chip {
     border-radius:8px;
     background-color: #eb6864;
     padding: 2px 4px;
     margin-right:4px;
     color: white;
+}
+.post-chip a {
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    display: inline;
+    color: white;
+    padding: 0px;
 }
