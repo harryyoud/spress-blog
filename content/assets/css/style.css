@@ -63,9 +63,9 @@ code {
 }
 /* /Posts list */
 .post-chip{
-    border-radius:5px;
+    border-radius:8px;
     background-color: #eb6864;
     padding: 2px 4px;
-    margin-right:15px;
-    color:white;
+    margin-right:4px;
+    color: white;
 }
