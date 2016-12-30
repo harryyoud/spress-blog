@@ -5,6 +5,18 @@
         <a href="{{ site.url }}{{ post.url }}">
             <h4>{{ post.title }}</h4>
         </a>
+        <div>
+          <span style="padding-right:10px;">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            {{ post.date }}
+          </span>
+          <span style="padding-right:10px;">
+            <i class="fa fa-folder" aria-hidden="true"></i>
+            {{ post.categories }}
+          <span>
+            <i class="fa fa-tag" aria-hidden="true"></i>
+            {{ post.tags }}
+          </span>
     </li>
     {% endfor %}
 </ul>
