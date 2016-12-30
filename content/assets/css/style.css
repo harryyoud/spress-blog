@@ -77,3 +77,6 @@ code {
     color: white;
     padding: 0px;
 }
+.posts-list-item a, .posts-list-item a:hover {
+    padding:0px;
+}
