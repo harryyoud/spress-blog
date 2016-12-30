@@ -4,7 +4,6 @@ title: "Building LineageOS"
 description: "A complete tutorial on building LineageOS and derivatives"
 categories: ["android"]
 tags: ["android","cyanogenmod","lineageos","tutorial"]
-draft: true
 ---
 
 ## Requirements
