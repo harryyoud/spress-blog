@@ -12,10 +12,14 @@
           </span>
           <span style="padding-right:10px;">
             <i class="fa fa-folder" aria-hidden="true"></i>
-            {{ post.categories }}
+            {% for category in post.categories %}
+              {{ category }}
+            {% endfor %}
           <span>
             <i class="fa fa-tag" aria-hidden="true"></i>
-            {{ post.tags }}
+            {% for tag in post.tags %}
+              {{ tag }}
+            {% endfor %}
           </span>
     </li>
     {% endfor %}
