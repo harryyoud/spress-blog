@@ -76,6 +76,7 @@ code {
     display: inline;
     color: white;
     padding: 0px;
+    background: none;
 }
 .posts-list-item a, .posts-list-item a:hover {
     padding:0px;
