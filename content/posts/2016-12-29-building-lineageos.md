@@ -105,8 +105,13 @@ breakfast yourdevicecodenamehere
 ```
 
 ### Complicated way (the proper way)
+
+#### What's a manifest?
 Repo decides what repositories to download by looking through manifests. The main manifest (downloaded when we initialised repo) is present in `~/home/yourusername/android/system/.repo/manifest.xml` and contains loads of repos needed for building common Android files.  
-You _could_ edit this file, but since this is updated when new things are added to Android, your changes would always be being overwritten. So the better option is to use _local manifests_. If you add your own `.xml` files in `~/home/yourusername/android/system/.repo/local_manifests/`, you can add and remove your own repos to the main list, without editing the main manifest. For instance, mine looks a little like this:
+You _could_ edit this file, but since this is updated when new things are added to Android, your changes would always be being overwritten. So the better option is to use _local manifests_. If you add your own `.xml` files in `~/home/yourusername/android/system/.repo/local_manifests/`, you can add and remove your own repos to the main list, without editing the main manifest.
+
+#### Organisation
+For instance, my `local_manifests` folder looks a little like this:
 
 File              | What does it contain?
 ---               |:---
@@ -118,6 +123,52 @@ File              | What does it contain?
 `roomservice.xml` | A default file made by the repo tool
 `serranoltexx.xml`| Device specifics for serranoltexx (Samsung Galaxy S4 Mini - Intl.)
 `shared.xml`      | Some common Android files needed by falcon, serranoltexx, which aren't in the default Android source
+
+#### Why on earth might you do this?
+If you want to make changes to device specific files, or even common Android things, you can `fork` the repository you'd like to change. You can make your changes in this repo (which you own) and then incorporate those changes into your builds.
+
+#### Forking the repo and making changes (only if you want to make changes)
+
+You first need to create a [GitHub](https://github.com/) account. Then go to [LineageOS's Github](https://github,com/LineageOS), find the repository you want to fork, and click fork in the top right. This will create a copy in your account, where you can make changes online.  
+
+To add the changes to your source code, create your manifest in _local_manifests_ `touch ~/android/system/.repo/local_manifests/whatever-name-you-want.xml`. Then edit it `nano ~/android/system/.repo/local_manifests/whatever-name-you-want.xml`
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+        <remote         name="github"
+                        fetch=".."
+                        review="review.lineageos.org" />
+
+        <project        path="where/the/files/need/to/go"
+                        name="GitHubUsername/name_of_repo"
+                        remote="github"
+                        revision="cm-14.1"/>
+</manifest>
+```
+For instance: (I chose to not fork, as I'm not making changes for my own purposes)
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+        <remote         name="github"
+                        fetch=".."
+                        review="review.lineageos.org" />
+
+        <project        path="device/huawei/angler"
+                        name="LineageOS/android_device_huawei_angler"
+                        remote="github"
+                        revision="cm-14.1"/>
+
+        <project        path="kernel/huawei/angler"
+                        name="LineageOS/android_kernel_huawei_angler"
+                        remote="github"
+                        revision="cm-14.1"/>
+
+        <project        path="vendor/huawei"
+                        name="TheMuppets/proprietary_vendor_huawei"
+                        remote="github"
+                        revision="cm-14.1"/>
+</manifest>
+```
 
 ## First build
 ## Automation
