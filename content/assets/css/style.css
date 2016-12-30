@@ -78,6 +78,12 @@ code {
     padding: 0px;
     background: none;
 }
+.post-chip:hover {
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    background: #bb5451 !important;
+}
 .posts-list-item a, .posts-list-item a:hover {
     padding:0px;
 }
