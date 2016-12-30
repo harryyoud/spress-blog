@@ -230,7 +230,7 @@ Well... no. This is great, but wouldn't it be good if you didn't have to do this
 
 <p id="doitallforme">&nbsp;</p>
 ## Automation
-There are loads of scripts out of there which wrap around the brunch and lunch command. I love reinventing the wheel (who doesn't?) so I made my own and named it `supper`. You can take a look [here](/lineageos/supper). It's run at 12:05am every morning by cron (the Linux scheduling daemon). You can add things to cron like this:
+There are loads of scripts out of there which wrap around the brunch and lunch command. I love reinventing the wheel (who doesn't?) so I made my own and named it `supper`. You can take a look [here](https://raw.githubusercontent.com/harryyoud/supper-build-script/master/supper). It's run at 12:05am every morning by cron (the Linux scheduling daemon). You can add things to cron like this:
 ```bash
 crontab -e
 ```
