@@ -5,6 +5,7 @@ description: "A complete tutorial on building LineageOS and derivatives"
 categories: ["android"]
 tags: ["android","cyanogenmod","lineageos","tutorial"]
 ---
+# This is a work-in-progress - don't take it all to heart
 
 ## Requirements
 You're going to need:
@@ -13,7 +14,7 @@ You're going to need:
 - a reasonable knowledge of the command line
 - 8GB+ RAM
 - Dual-core+ CPU
-- Lots of disk space (~50GB for the actual source code, ~30GB per device)
+- Lots of disk space (~50GB for the actual source code, ~30GB per device and however much you want for cache)
 - 10mbps+ internet (if you want to get *anything* done)
 - sudo privileges
 
@@ -22,7 +23,7 @@ You're going to need:
 - Git is a version control system. It basically tracks any changes to files and folders
   - So if someone makes a typo, you don't have to download 50GB+ worth of files again after they correct it
   - Also, if someone does something malicious, it can be tracked down to the date and time it was added to the code and by whom
-- Repositories are basically collections of files (with Git information) such as android_device_huawei_angler, the repo that contains device information for the angler device (Nexus 6P) made by Huawei
+- Repositories (often shortened to repos) are basically collections of files (with Git information) such as _android_device_huawei_angler_, the repo that contains _device_ information for the _angler_ device (Nexus 6P) made by _Huawei_
 - breakfast, brunch and lunch are scripts made by Google which make building Android much easier. It means you just pick the device you want to build for, and it does it, rather than having to build each file individually
 
 ## Installing some tools
@@ -35,6 +36,28 @@ In addition, for 64 bit systems you're going to need:
 sudo apt install g++-multilib gcc-multilib lib32ncurses5-dev lib32readline6-dev lib32z1-dev
 ```
 
+Secondly, we're going to need a Python script, written by Google which manages multiple Git repositories. We'll install it to your personal binary folder.
+
+```bash
+# make the directory. ~ is shorthand for /home/yourusername
+mkdir -p ~/bin
+
+# Download the repo files
+curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+
+# Make it executable
+chmod a+x ~/bin/repo
+
+# Add your personal binary folder to your PATH (a list of folders to search through when looking for commands)
+# The code (which launches every time you open a terminal), checks whether ~/bin exists and if so, adds it to the path
+echo '# set PATH so it includes users private bin if it exists' >> ~/.profile
+echo 'if [ -d "$HOME/bin" ] ; then' >> ~/.profile
+echo '    PATH="$HOME/bin:$PATH"' >> ~/.profile
+echo 'fi' >> ~/.profile
+
+```
+
+
 ## Making decisions
 ### Where are you going to put this code?
 Ideally on 1TB SSD, but, unless you're rich or prepared to spend lots of money... no.
@@ -43,20 +66,58 @@ An SSD would be ideal, but finding a large size one isn't a cost-effective optio
 On a different disk to your OS's disk is your best choice. That way your computer shouldn't crap out too badly when it's building.
 I'm going to assume for simplicity, you've chosen to build it on the same disk.
 
+### What devices am I building for?
+I can't make this decision for you, but you can. Be aware, each device will take more disk space, and will also mean you will take more time when you build for _all_ devices sequentially
+
 ## Getting the code
-First, we're going to need a Python script, written by Google which manages multiple Git repositories. We'll install it to your personal binary folder.
+Here, you want to close and reopen your terminal, to ensure the change we just made is taken into account
 ```bash
-# make the directory. ~ is shorthand for /home/yourusername
-mkdir -p ~/bin
 # make the folder to store all the Android code
 # This is where you can choose to store all this somewhere else
 mkdir -p ~/android/system
-# Download the repo files
-curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-# Make it executable
-chmod a+x ~/bin/repo
+
+# Move into the directory, ready to start downloading
+cd ~/android/system/
+
+# Tell repo what we want to download
+# init = initialise the repositories
+# https://github.com/LineageOS/android.git = the list of repositories to download
+# -b cm-14.1 =  the branch or version of code we are downloading
+#               this will change depending on the version *you* want. This is for cm-14.1 (CyanogenMod 14.1 based on Android 7.1.1)
+repo init -u https://github.com/LineageOS/android.git -b cm-14.1
+
+# Start the download
+repo sync
 ```
+At this point, (unless you have gigabit internet), go get a coffee. This is gonna take a while. When it's done, you'll be returned to the shell prompt again
 
 ## Getting the devices
+The code we just downloaded is the _general_ or _common_ code for Android. Put simply, it's the stuff that's the same on all the devices.  
+To get specific files for a device (such as angler), we need to tell repo which device you want.  
+We can either do this simply, but not future-proofed, or the slightly more complicated way, which is much more fun.
+
+### Simple way
+Just replace yourdevicecodenamehere with your device's codename. For instance, the Nexus 6P's is _angler_, the Nexus 9's is _flounder_ and Motorola Moto G (2013)'s is _falcon_
+
+```bash
+source build/envsetup.sh
+breakfast yourdevicecodenamehere
+```
+
+### Complicated way (the proper way)
+Repo decides what repositories to download by looking through manifests. The main manifest (downloaded when we initialised repo) is present in `~/home/yourusername/android/system/.repo/manifest.xml` and contains loads of repos needed for building common Android files.  
+You _could_ edit this file, but since this is updated when new things are added to Android, your changes would always be being overwritten. So the better option is to use _local manifests_. If you add your own `.xml` files in `~/home/yourusername/android/system/.repo/local_manifests/`, you can add and remove your own repos to the main list, without editing the main manifest. For instance, mine looks a little like this:
+
+File              | What does it contain?
+---               |:---
+`angler.xml`      | Device specifics for angler (Nexus 6P)
+`falcon.xml`      | Device specifics for falcon (Motorola Moto G - 2013)
+`flounder.xml`    | Device specifics for flounder (Nexus 9 - WiFi)
+`flounder_lte.xml`| Device specifics for flounder_lte (Nexus 9 - LTE)
+`qualcomm.xml`    | Qualcomm common files (used by falcon and serranoltexx)
+`roomservice.xml` | A default file made by the repo tool
+`serranoltexx.xml`| Device specifics for serranoltexx (Samsung Galaxy S4 Mini - Intl.)
+`shared.xml`      | Some common Android files needed by falcon, serranoltexx, which aren't in the default Android source
+
 ## First build
 ## Automation
