@@ -118,8 +118,6 @@ At this point, (unless you have gigabit internet), go get a coffee. This is gonn
 The code we just downloaded is the _general_ or _common_ code for Android. Put simply, it's the stuff that's the same on all the devices.  
 To get specific files for a device (such as angler), we need to tell repo which device you want. As well as the open-source device specifics, you need some proprietary files (things like camera libraries or sound FX libraries). These can be either extracted from a device already running stock android: (with Developer Settings enabled - tap on Build number in Settings > About seven times), but are best downloaded online.
 
-<p id="devicecode-manifest">&nbsp;</p>
-###
 Just replace yourdevicecodenamehere with your device's codename. For instance, the Nexus 6P's is _angler_, the Nexus 9's is _flounder_ and Motorola Moto G (2013)'s is _falcon_
 
 ```bash
