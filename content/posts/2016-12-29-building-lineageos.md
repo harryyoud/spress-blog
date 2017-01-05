@@ -114,100 +114,52 @@ repo sync
 At this point, (unless you have gigabit internet), go get a coffee. This is gonna take a while. When it's done, you'll be returned to the shell prompt again
 
 <p id="devicecode">&nbsp;</p>
-## Getting the devices
+## Device-specific code
 The code we just downloaded is the _general_ or _common_ code for Android. Put simply, it's the stuff that's the same on all the devices.  
-To get specific files for a device (such as angler), we need to tell repo which device you want. As well as the open-source device specifics, you need some proprietary files (things like camera libraries or sound FX libraries). These can be either extracted from a device already running stock android: (with Developer Settings enabled - tap on Build number in Settings > About seven times)
-```bash
-# Replace MANUFACTURER with your device's manufacturer
-# Replace DEVICE with your device's codename
-cd ~/android/system/device/MANUFACTURER/DEVICE
-# Plug in your device and enable USB Debugging (Settings > Developer Options)
-./extract-files.sh
-```
-Or you can download them from [TheMuppets GitHub](https://github.com/TheMuppets) and add them to your local manifest (more about that below)
+To get specific files for a device (such as angler), we need to tell repo which device you want. As well as the open-source device specifics, you need some proprietary files (things like camera libraries or sound FX libraries). These can be either extracted from a device already running stock android: (with Developer Settings enabled - tap on Build number in Settings > About seven times), but are best downloaded online.
 
-We can either do this simply, but not future-proofed, or the slightly more complicated way, which is much more fun.
-
-<p id="devicecode-simpleway">&nbsp;</p>
-### Simple way <small>(proprietary files will _have_ to come from a running device)</small>
+<p id="devicecode-manifest">&nbsp;</p>
+###
 Just replace yourdevicecodenamehere with your device's codename. For instance, the Nexus 6P's is _angler_, the Nexus 9's is _flounder_ and Motorola Moto G (2013)'s is _falcon_
 
 ```bash
 source build/envsetup.sh
 breakfast yourdevicecodenamehere
 ```
+You should see some errors, at which point you want to download the proprietary code for your manufacturer.
+All this can be done in the next section, once we go through some terms.
 
-<p id="devicecode-complicatedway">&nbsp;</p>
-### Complicated way (the proper way)
+<p id="devicecode-manifest">&nbsp;</p>
+### Proprietary files
 
-<p id="devicecode-complicatedway-whatsamanifest">&nbsp;</p>
+<p id="devicecode-manifest-whatsamanifest">&nbsp;</p>
 #### What's a manifest?
 Repo decides what repositories to download by looking through manifests. The main manifest (downloaded when we initialised repo) is present in `~/home/yourusername/android/system/.repo/manifest.xml` and contains loads of repos needed for building common Android files.  
-You _could_ edit this file, but since this is updated when new things are added to Android, your changes would always be being overwritten. So the better option is to use _local manifests_. If you add your own `.xml` files in `~/home/yourusername/android/system/.repo/local_manifests/`, you can add and remove your own repos to the main list, without editing the main manifest.
+You _could_ edit this file, but since this is updated when new things are added to Android, your changes would always be being overwritten. So the better option is to use _local manifests_. If you edit `~/home/yourusername/android/system/.repo/local_manifests/roomservice.xml`, where you can add and remove your own repos to the main list, without editing the main manifest.
 
-<p id="devicecode-complicated-organisation">&nbsp;</p>
-#### Organisation
-For instance, my `local_manifests` folder looks a little like this:
-
-File              | What does it contain?
----               |:---
-`angler.xml`      | Device specifics for angler (Nexus 6P)
-`falcon.xml`      | Device specifics for falcon (Motorola Moto G - 2013)
-`flounder.xml`    | Device specifics for flounder (Nexus 9 - WiFi)
-`flounder_lte.xml`| Device specifics for flounder_lte (Nexus 9 - LTE)
-`qualcomm.xml`    | Qualcomm common files (used by falcon and serranoltexx)
-`roomservice.xml` | A default file made by the repo tool
-`serranoltexx.xml`| Device specifics for serranoltexx (Samsung Galaxy S4 Mini - Intl.)
-`shared.xml`      | Some common Android files needed by falcon, serranoltexx, which aren't in the default Android source
-
-<p id="devicecode-complicatedway-whyohwhy">&nbsp;</p>
+<p id="devicecode-manifest-whyohwhy">&nbsp;</p>
 #### Why on earth might you do this?
 If you want to make changes to device specific files, or even common Android things, you can `fork` the repository you'd like to change. You can make your changes in this repo (which you own) and then incorporate those changes into your builds.
 
-<p id="devicecode-complicatedway-forkoff">&nbsp;</p>
-#### Forking the repo and making changes (only if you want to make changes)
-
-You first need to create a [GitHub](https://github.com/) account. Then go to [LineageOS's Github](https://github,com/LineageOS), find the repository you want to fork, and click fork in the top right. This will create a copy in your account, where you can make changes online.  
-
-To add the changes to your source code, create your manifest in _local_manifests_ `touch ~/android/system/.repo/local_manifests/whatever-name-you-want.xml`. Then edit it `nano ~/android/system/.repo/local_manifests/whatever-name-you-want.xml`
+#### How do I make a manifest then?
+Edit roomservice: `nano ~/android/system/.repo/local_manifests/roomservice.xml`
+You should see some content already here, based loosely on this:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-        <remote         name="github"
-                        fetch=".."
-                        review="review.lineageos.org" />
-
-        <project        path="where/the/files/need/to/go"
-                        name="GitHubUsername/name_of_repo"
-                        remote="github"
-                        revision="cm-14.1"/>
+<remote name="github" fetch=".." review="review.lineageos.org" />
+<project path="where/the/files/need/to/go" name="LineageOS/name_of_repo" remote="github"/>
 </manifest>
 ```
-For instance: (I chose to not fork, as I'm not making changes for my own purposes)
+
+This contains all the device-specific code (excluding the proprietary stuff). To download the proprietary stuff, wander over to [TheMuppets GitHub](https://github.com/TheMuppets) and search for your manufacturer. Take note of the name of the repository.
+Then add this before `</manifest>` at the bottom of the file:
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<manifest>
-        <remote         name="github"
-                        fetch=".."
-                        review="review.lineageos.org" />
-
-        <project        path="device/huawei/angler"
-                        name="LineageOS/android_device_huawei_angler"
-                        remote="github"
-                        revision="cm-14.1"/>
-
-        <project        path="kernel/huawei/angler"
-                        name="LineageOS/android_kernel_huawei_angler"
-                        remote="github"
-                        revision="cm-14.1"/>
-
-        <project        path="vendor/huawei"
-                        name="TheMuppets/proprietary_vendor_huawei"
-                        remote="github"
-                        revision="cm-14.1"/>
-</manifest>
+<project path="vendor/MANUFACTURER" name="TheMuppets/NAME_OF_REPO" remote="github"/>
 ```
-After you've made any changes to your manifest or want to update the code from LineageOS, run:
+Take a look at my local manifest for some examples [here](https://github.com/harryyoud/LinOS_Manifests)
+
+After you've made any changes to your manifest (which we've done) or want to update the code from LineageOS, run:
 ```bash
 # From your ~/android/system directory
 repo sync
@@ -233,7 +185,7 @@ Well... no. This is great, but wouldn't it be good if you didn't have to do this
 
 <p id="doitallforme">&nbsp;</p>
 ## Automation
-There are loads of scripts out of there which wrap around the brunch and lunch command. I love reinventing the wheel (who doesn't?) so I made my own and named it `supper`. You can take a look [here](https://raw.githubusercontent.com/harryyoud/supper-build-script/master/supper). It's run at 12:05am every morning by cron (the Linux scheduling daemon). You can add things to cron like this:
+There are loads of scripts out of there which wrap around the brunch and lunch command. I love reinventing the wheel (who doesn't?) so I made my own and named it `midnightsnack`. You can take a look [here](https://github.com/harryyoud/midnightsnack). It's run at 12:05am every morning by cron (the Linux scheduling daemon). You can add things to cron like this:
 ```bash
 crontab -e
 ```
@@ -241,35 +193,25 @@ and add:
 ```
 # minute hour dayOfMonth month dayOfWeek command
 # * means every. so the 5th minute of the 12th hour of every day of every month regardless of the day of week
-5 0 * * * /bin/bash /home/harry/android/system/supper >> /home/YOURUSERNAME/android/system/logs/crontab.log 2>&1
-# /bin/bash is the shell (or interpreter) which runs the supper file and dumps all the output into the crontab.log file
-# 2>&1 means send both normal output and errors to the log file
+5 0 * * * /bin/bash /home/harry/projects/midnightsnack/main.sh
+# /bin/bash is the shell (or interpreter) which runs the main.sh file
 ```
 It basically goes like this:
 
-1. Define lots of settings, so I don't have to dig through the script for them:
-  - Where's the source? (`$SOURCETREE`)
-  - What devices are we building for? (`$DEVICES`)
-  - Sync repo when the script starts? (`$SYNCONSTART`)
-  - Where do you want log files to go? (`$LOGFILEDIR`)
-  - Delete the build zip after it's been uploaded to the server? (`$DELETEAFTERUPLOAD`)
-  - Use CCACHE? (`$USE_CCACHE`)
-1. Spit some headers into the main cron logfile
-1. Move into the source code directory
-1. Quit the entire script on errors (I'm going to make this better to handle _some_ errors one day)
-1. Sync repositories if `$SYNCONSTART` is set to `true`
-1. For each device in `$DEVICES`
-  1. Choose log file names (separate files for the make and progress through script)
-  1. Pull in commands from build/envsetup.sh
-  1. Run the `lunch` command (it's basically a more hands-on version of `brunch`)
-  1. Run the build using `mka otapackage`
-  1. Find the latest zip in the out folder (should be the one we just made)
-  1. MD5SUM it, ready for upload
-  1. Rename it so the name is pretty
-  1. Upload the zip and MD5SUM to my server
-  1. Delete the zip file
-  1. Repeat section for next device
-1. Tell the logfile everything is okay, cos no one else will listen
+1.  Import includes (functions, settings, error descs) and set vars
+2.  CheckVariablesExist
+3.  LogHeaders
+4.  Repo Sync
+5.  DeviceLoop
+     5a. LogHeaders
+     5b. Lunch
+     5c. Make
+     5d. Find and rename zip
+     5e. MD5sum
+     5f. Upload zip, then rename
+     5g. Delete Build zip
+6.  TarGZ logs
+7.  Drop email with successes and fails with attached logs
 
 <p id="whatnow">&nbsp;</p>
 ## All done
