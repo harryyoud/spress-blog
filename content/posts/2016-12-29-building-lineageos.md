@@ -63,6 +63,30 @@ echo 'fi' >> ~/.profile
 
 ```
 
+Last thing, you need to ensure OpenJDK (and not Oracle's JDK) is set to be the default java.
+
+```bash
+sudo update-alternatives --config java
+```
+You should see something like this:
+Type the selection number of the line showing "java-8-openjdk(-amd64)" with "manual mode" and press enter
+```
+There are 3 choices for the alternative java (providing /usr/bin/java).
+
+  Selection    Path                                            Priority   Status
+------------------------------------------------------------
+  0            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java   1071      auto mode
+  1            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java   1071      manual mode
+* 2            /usr/lib/jvm/jdk1.7.0/bin/java                   1         manual mode
+  3            /usr/lib/jvm/jdk1.8.0/bin/java                   1         manual mode
+
+Press enter to keep the current choice[*], or type selection number: 3
+```
+and do the same for javac:
+```bash
+sudo update-alternatives --config javac
+```
+
 <p id="decisions">&nbsp;</p>
 ## Making decisions
 <p id="decisions-wheregoesthecode">&nbsp;</p>
