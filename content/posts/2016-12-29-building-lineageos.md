@@ -113,6 +113,14 @@ echo "export USE_CCACHE=1" >> ~/.bashrc
 # The larger the better, if you can afford it
 prebuilts/misc/linux-x86/ccache/ccache -M 50G
 ```
+<p id="decisions-moreramthanchrome"
+### How much RAM will I dedicate?
+RAM is an important consideration, as you need a decent amount.
+You need at least 4GB really, but I made mine 6G, so I wouldn't run into problems
+We can set it in ~/.bashrc, by adding this to it:
+```bash
+export ANDROID_JACK_VM_ARGS="-Xmx6g -Dfile.encoding=UTF-8 -XX:+TieredCompilation"
+```
 
 <p id="gettingthecode">&nbsp;</p>
 ## Getting the code
