@@ -113,7 +113,7 @@ echo "export USE_CCACHE=1" >> ~/.bashrc
 # The larger the better, if you can afford it
 prebuilts/misc/linux-x86/ccache/ccache -M 50G
 ```
-<p id="decisions-moreramthanchrome"
+<p id="decisions-moreramthanchrome">&nbsp;</p>
 ### How much RAM will I dedicate?
 RAM is an important consideration, as you need a decent amount.
 You need at least 4GB really, but I made mine 6G, so I wouldn't run into problems
